@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>СБ FOOTBALL | AI Прогнозы</title>
+    <link rel="icon" type="image/png" href="icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #7e22ce;
+            --accent: #06b6d4;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --gray-light: #cbd5e1;
+            --success: #10b981;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Минималистичная навигация */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: all 0.4s ease;
+        }
+        
+        header.scrolled {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 0;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+        
+        /* Страницы */
+        .page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 100px 0;
+        }
+        
+        /* Первая страница - СБ HOCKEY */
+        .page-1 {
+            background: linear-gradient(135deg, var(--dark) 0%, #1e293b 100%);
+        }
+        
+        .hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .main-logo {
+            font-size: 120px;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .main-logo .sb-text {
+            color: var(--light);
+        }
+        
+        .main-logo .hockey-text {
+            color: var(--primary);
+        }
+        
+        .main-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            border-radius: 2px;
+        }
+        
+        .ai-title {
+            font-size: 80px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 10px;
+            color: var(--light); /* Изменено на белый цвет */
+            position: relative;
+            display: inline-block;
+        }
+        
+        .since {
+            font-size: 24px;
+            color: var(--gray);
+            margin-top: 50px;
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
+        
+        .floating-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .shape {
+            position: absolute;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+        
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            left: 80%;
+            animation-delay: 1s;
+        }
+        
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 80%;
+            left: 15%;
+            animation-delay: 2s;
+        }
+        
+        .ai-particle {
+            position: absolute;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: ai-float 6s ease-in-out infinite;
+        }
+        
+        @keyframes ai-float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(20px, -30px) scale(1.1);
+            }
+            50% {
+                transform: translate(-15px, -50px) scale(0.9);
+            }
+            75% {
+                transform: translate(30px, -20px) scale(1.05);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+        
+        /* Вторая страница - AI Прогнозы */
+        .page-2 {
+            background: linear-gradient(135deg, #1e293b 0%, var(--dark) 100%);
+        }
+        
+        .page-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .page-title {
+            font-size: 64px;
+            font-weight: 800;
+            margin-bottom: 40px;
+            background: linear-gradient(90deg, var(--light), var(--gray-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+        }
+        
+        .page-description {
+            font-size: 22px;
+            margin: 0 auto 50px;
+            color: var(--gray-light);
+            line-height: 1.8;
+            max-width: 700px;
+        }
+        
+        .cta-section {
+            text-align: center;
+            margin-top: 60px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 18px;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            font-weight: 700;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+        }
+        
+        .forecast-btn {
+            position: relative;
+            overflow: hidden;
+            padding: 18px 45px;
+            font-size: 18px;
+            border-radius: 50px;
+        }
+        
+        /* Третья страница - Технологии */
+        .page-3 {
+            background: linear-gradient(135deg, var(--dark) 0%, #1e293b 100%);
+        }
+        
+        .about-content {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .about-text {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: var(--gray-light);
+            line-height: 1.7;
+        }
+        
+        .highlight {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+        }
+        
+        .services {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 60px;
+        }
+        
+        .service-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            padding: 40px 30px;
+            border-radius: 15px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(126, 34, 206, 0.1));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .service-card:hover::before {
+            opacity: 1;
+        }
+        
+        .service-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .service-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--light);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .service-description {
+            color: var(--gray-light);
+            position: relative;
+            z-index: 1;
+            line-height: 1.6;
+        }
+        
+        /* Навигационные точки */
+        .nav-dots {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .dot {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .dot-circle {
+            width: 12px;
+            height: 12px;
+            background-color: var(--gray);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .dot.active .dot-circle {
+            background-color: var(--primary);
+            transform: scale(1.5);
+            box-shadow: 0 0 10px var(--primary);
+        }
+        
+        .dot-label {
+            color: var(--gray);
+            font-size: 14px;
+            margin-right: 15px;
+            opacity: 0;
+            transform: translateX(10px);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .dot:hover .dot-label {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .dot.active .dot-label {
+            opacity: 1;
+            transform: translateX(0);
+            color: var(--light);
+        }
+        
+        /* Анимации */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Индикатор прогресса */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            z-index: 1001;
+            transition: width 0.3s ease;
+        }
+        
+        /* Стили для прогнозов */
+        .forecast-container {
+            display: none;
+            margin-top: 40px;
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        .forecast-container.visible {
+            display: block;
+        }
+        
+        .forecast-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--light);
+            text-align: center;
+        }
+        
+        .forecast-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+            transition: all 0.4s ease;
+        }
+        
+        .forecast-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .match-header {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--light);
+            text-align: center;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 15px;
+        }
+        
+        .forecast-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .forecast-item:last-child {
+            border-bottom: none;
+        }
+        
+        .forecast-type {
+            font-size: 18px;
+            color: var(--gray-light);
+            font-weight: 500;
+        }
+        
+        .forecast-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--success);
+        }
+        
+        .coefficient {
+            background: linear-gradient(90deg, var(--success), #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        
+        .analysis-section {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--glass-border);
+        }
+        
+        .analysis-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--light);
+        }
+        
+        .analysis-text {
+            font-size: 16px;
+            color: var(--gray-light);
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .final-message {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(37, 99, 235, 0.1));
+            border-radius: 10px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .final-text {
+            font-size: 18px;
+            color: var(--light);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .telegram-btn {
+            background: linear-gradient(90deg, #0088cc, #00aced);
+            margin-top: 10px;
+        }
+        
+        .telegram-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 136, 204, 0.4);
+        }
+        
+        .ai-loading {
+            display: none;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .ai-loading.visible {
+            display: block;
+        }
+        
+        .loading-text {
+            font-size: 18px;
+            color: var(--gray-light);
+            margin-bottom: 20px;
+        }
+        
+        .loading-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .loading-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+            animation: loadingBounce 1.4s ease-in-out infinite both;
+        }
+        
+        .loading-dot:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dot:nth-child(2) { animation-delay: -0.16s; }
+        .loading-dot:nth-child(3) { animation-delay: 0s; }
+        
+        @keyframes loadingBounce {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 1024px) {
+            .main-logo {
+                font-size: 90px;
+            }
+            
+            .ai-title {
+                font-size: 60px;
+            }
+            
+            .page-title {
+                font-size: 52px;
+            }
+            
+            .services {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-links {
+                gap: 20px;
+            }
+            
+            .main-logo {
+                font-size: 60px;
+            }
+            
+            .ai-title {
+                font-size: 40px;
+            }
+            
+            .page-title {
+                font-size: 40px;
+            }
+            
+            .page-description, .about-text {
+                font-size: 18px;
+            }
+            
+            .nav-dots {
+                right: 15px;
+            }
+            
+            .forecast-item {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-logo {
+                font-size: 50px;
+            }
+            
+            .ai-title {
+                font-size: 30px;
+            }
+            
+            .page-title {
+                font-size: 32px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+        
+        /* Специальные стили для первой страницы */
+        .title-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .title-divider {
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            margin: 20px 0;
+            border-radius: 2px;
+        }
+        
+        /* Минималистичный дизайн - убраны лишние элементы */
+        .nav-actions {
+            display: none;
+        }
+        
+        /* Улучшенная типографика */
+        .minimal-subtitle {
+            font-size: 20px;
+            color: var(--gray-light);
+            margin-top: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        /* Убираем старые фоновые эффекты */
+        body::before {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Индикатор прогресса -->
+    <div class="progress-bar"></div>
+    
+    <!-- Минималистичная навигация -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">СБ<span>FOOTBALL</span></a>
+                <ul class="nav-links">
+                    <li><a href="#page-1" class="active">Главная</a></li>
+                    <li><a href="#page-2">AI Прогнозы</a></li>
+                    <li><a href="#page-3">Технологии</a></li>
+                </ul>
+                <!-- Убраны кнопки навигации -->
+            </nav>
+        </div>
+    </header>
+
+    <!-- Навигационные точки -->
+    <div class="nav-dots">
+        <div class="dot active" data-page="1">
+            <span class="dot-label">Главная</span>
+            <div class="dot-circle"></div>
+        </div>
+        <div class="dot" data-page="2">
+            <span class="dot-label">AI Прогнозы</span>
+            <div class="dot-circle"></div>
+        </div>
+        <div class="dot" data-page="3">
+            <span class="dot-label">Технологии</span>
+            <div class="dot-circle"></div>
+        </div>
+    </div>
+
+    <!-- Первая страница - СБ HOCKEY -->
+    <section id="page-1" class="page page-1">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+        <div id="ai-particles-container"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="title-container">
+                    <div class="main-logo fade-in">
+                        <span class="sb-text">СБ</span> <span class="hockey-text">FOOTBALL</span>
+                    </div>
+                    <div class="title-divider"></div>
+                    <div class="ai-title fade-in">
+                        AI ПРОГНОЗЫ
+                    </div>
+                </div>
+                <div class="since fade-in">since 2020</div>
+                <p class="minimal-subtitle fade-in">
+                    Коммерческая ИИ-программа СБ AI анализирует множество параметров, прогнозируя наиболее вероятные исходы событий. Анализ от AI - 
+                    чистая математика и статистика, никаких эмоций. Технологии будущего уже сегодня.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Вторая страница - AI Прогнозы -->
+    <section id="page-2" class="page page-2">
+        <div class="container">
+            <div class="page-content">
+                <h1 class="page-title fade-in">AI Аналитика</h1>
+                <p class="page-description fade-in">
+                   Для СБ AI каждая игра - уравнение. Программа 
+                   обрабатывает статистику команд, текущую форму игроков,
+                   исторические данные, погодные условия и ещё 100+ параметров
+                    каждого события для создания математически точных прогнозов.
+                    Кроме того, программа самостоятельно обучается как на успешных
+                    прогнозах, так и на ошибочных, что делает каждый новый 
+                    прогноз точнее предыдущего.<br><br>
+
+                    <b>ВАЖНО:</b> 
+                    СБ Ai лишь увеличивает шанс захода, не гарантируя его.
+                     Играйте на свой страх и риск.
+                </p>
+                <div class="cta-section">
+                    <button class="btn btn-primary forecast-btn fade-in" id="forecast-btn">
+                        <i class="fas fa-robot" style="margin-right: 10px;"></i>Получить AI прогноз
+                    </button>
+                </div>
+                
+                <!-- Контейнер для прогнозов -->
+                <div class="forecast-container" id="forecast-container">
+                    <!-- Прогноз будет вставлен сюда динамически -->
+                </div>
+                
+                <!-- Индикатор загрузки -->
+                <div class="ai-loading" id="ai-loading">
+                    <div class="loading-text">AI анализирует данные матча...</div>
+                    <div class="loading-dots">
+                        <div class="loading-dot"></div>
+                        <div class="loading-dot"></div>
+                        <div class="loading-dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Третья страница - Технологии -->
+    <section id="page-3" class="page page-3">
+        <div class="container">
+            <div class="about-content">
+                <p class="about-text fade-in">
+                    Для основного анализа используется <span class="highlight">многоуровневая система подсчёта коэффициентов</span>, включающая в себя более 100 аспектов.
+                </p>
+                
+                <p class="about-text fade-in">
+                    Вот несколько из них:
+                </p>
+                
+                <p class="about-text fade-in">
+                    + xG, G/G, xA, H2H, xGA, xGChain, KP, PS%<br>
+                    + Все средние показатели команды.<br>
+                    + Средние показатели игроков, форма.<br>
+                    + Заинтересованность в матче, мотивация.<br>
+                    + Прогнозы ведущих каперов и редакций.<br>
+                    ...<br>
+                    <span class="highlight">И ещё более 100 позиций</span>
+                </p>
+                
+                <p class="about-text fade-in">
+                    Для каждого из показателей рассчитывается переменное значение, после чего определяются коэффиценты и выбирается ставка.
+                </p>
+                
+                <div class="services">
+                    <div class="service-card fade-in">
+                        <div class="service-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="service-title">Нейросетевой анализ</h3>
+                        <p class="service-description">Глубокая нейросеть анализирует исторические данные, текущую статистику и скрытые паттерны для прогнозирования результатов с минимальной погрешностью.</p>
+                    </div>
+                    
+                    <div class="service-card fade-in">
+                        <div class="service-icon">
+                            <i class="fas fa-chart-network"></i>
+                        </div>
+                        <h3 class="service-title">Машинное обучение</h3>
+                        <p class="service-description">Алгоритмы постоянно совершенствуются, обучаясь на новых данных. Каждый прогноз делает систему умнее и точнее.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Данные прогноза
+        const forecastData = {
+            teams: '«Интер» – «Ливерпуль»',
+            forecasts: [
+                { type: 'Индивидуальный тотал «Интера» больше 2', coefficient: null }
+            ],
+            analysis: [
+                'СБ AI проанализировала 192 параметра предстоящего матча.',
+                'Рекомендованная ставка (повышенный риск): Индивидуальный тотал «Интера» больше 2',
+                'Оценочная вероятность прохода: 79,389%',
+                '',
+                'Краткий аналитический разбор',
+                '«Интер» (Милан)',
+                '',
+                'После 5 туров Лиги Чемпионов сезона 2025–2026 «Интер» одержал 4 победы при 1 поражении, демонстрируя высокую стабильность:',
+                '',
+                '«Аякс» – «Интер» 0:2',
+                '«Интер» – «Славия» 3:0',
+                '«Юнион» – «Интер» 0:4',
+                '«Интер» – «Кайрат» 2:1',
+                '«Атлетико» – «Интер» 2:1',
+                '',
+                'По итогам отрезка миланцы набрали 12 очков, занимая 4-е место в сводной таблице ЛЧ.',
+                'Средние показатели в турнире — 2,4 забитых и 0,6 пропущенных мяча за матч.',
+                '',
+                'В Серии А команда провела 14 матчей, в активе 10 побед и 4 поражения. Средний результат — 2,29 забитых при 0,93 пропущенных мяча.',
+                '',
+                'Форма подопечных Кристиана Киву оценивается как стабильно высокая. Ключевые фигуры — Лаутаро Мартинес и Маркус Тюрам, текущая форма которых оказывает прямое влияние на атакующий потенциал команды.',
+                '',
+                '«Ливерпуль»',
+                '',
+                'В Лиге Чемпионов текущего сезона «Ливерпуль» имеет 3 победы и 2 поражения:',
+                '',
+                '«Ливерпуль» – «Атлетико» 3:2',
+                '«Галатасарай» – «Ливерпуль» 1:0',
+                '«Айнтрахт» – «Ливерпуль» 1:5',
+                '«Ливерпуль» – «Реал Мадрид» 1:0',
+                '«Ливерпуль» – «ПСВ» 1:4',
+                '',
+                'Команда набрала 9 очков, располагаясь на 13-й позиции сводной таблицы ЛЧ.',
+                'Средние показатели — 2,0 забитых и 1,6 пропущенных мяча за матч.',
+                '',
+                'В АПЛ «Ливерпуль» проводит один из самых нестабильных стартов последних лет, находясь вне зоны еврокубков — 10-е место. Средний показатель результативности — 1,6 : 1,6 (забитые/пропущенные).',
+                '',
+                'Вывод аналитической системы',
+                '',
+                'Сравнительная форма команд фиксирует преимущество «Интера» как в еврокубковых матчах, так и во внутреннем чемпионате. Миланцы демонстрируют более сбалансированную игру и значительно надёжнее в обороне, сохраняя высокий темп атакующих действий. «Ливерпуль» остаётся непредсказуемым: способен крупно выиграть, но столь же вероятно — провалить матч.',
+                '',
+                'Учитывая динамику показателей и атакующую активность «Интера», ставка на индивидуальный тотал хозяев больше 2 выглядит обоснованной, при этом рекомендуется рассматривать её как вариант с повышенным риском, но оправданным статистически.'
+            ]
+        };
+
+        // Создание плавающих элементов
+        function createFloatingShapes() {
+            const shapesContainer = document.querySelector('.floating-shapes');
+            
+            for (let i = 0; i < 5; i++) {
+                const shape = document.createElement('div');
+                shape.classList.add('shape');
+                
+                const size = Math.random() * 200 + 50;
+                shape.style.width = `${size}px`;
+                shape.style.height = `${size}px`;
+                shape.style.top = `${Math.random() * 100}%`;
+                shape.style.left = `${Math.random() * 100}%`;
+                shape.style.animationDelay = `${Math.random() * 8}s`;
+                shape.style.opacity = `${Math.random() * 0.1 + 0.03}`;
+                
+                shapesContainer.appendChild(shape);
+            }
+        }
+
+        // Создание AI частиц
+        function createAIParticles() {
+            const container = document.getElementById('ai-particles-container');
+            
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('ai-particle');
+                
+                const size = Math.random() * 8 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 6}s`;
+                particle.style.opacity = `${Math.random() * 0.4 + 0.1}`;
+                
+                // Случайный цвет частицы
+                const colors = ['#00d9ff', '#7b42ff', '#ff2a6d'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.background = randomColor;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Магнитный эффект для элементов
+        function initMagneticElements() {
+            const elements = document.querySelectorAll('.btn, .service-card, .logo');
+            
+            elements.forEach(element => {
+                element.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const deltaX = (x - centerX) / centerX;
+                    const deltaY = (y - centerY) / centerY;
+                    
+                    this.style.transform = `translate(${deltaX * 5}px, ${deltaY * 5}px)`;
+                });
+                
+                element.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translate(0, 0)';
+                });
+            });
+        }
+        
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            createFloatingShapes();
+            createAIParticles();
+            initMagneticElements();
+            
+            // Эффект печатающегося текста для заголовка
+            const title = document.querySelector('.page-title');
+            const originalText = title.textContent;
+            
+            function typeWriter(element, text, speed = 80) {
+                let i = 0;
+                element.innerHTML = '';
+                
+                function typing() {
+                    if (i < text.length) {
+                        element.innerHTML += text.charAt(i);
+                        i++;
+                        setTimeout(typing, speed);
+                    }
+                }
+                
+                // Запускаем после небольшой задержки
+                setTimeout(typing, 1000);
+            }
+            
+            // Запускаем эффект печатающегося текста после загрузки
+            typeWriter(title, originalText, 70);
+        });
+        
+        // Навигация по точкам
+        document.querySelectorAll('.dot').forEach(dot => {
+            dot.addEventListener('click', function() {
+                const targetPage = this.getAttribute('data-page');
+                
+                // Обновляем активную точку
+                document.querySelectorAll('.dot').forEach(d => {
+                    d.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Обновляем активную ссылку в навигации
+                document.querySelectorAll('.nav-links a').forEach(link => {
+                    link.classList.remove('active');
+                });
+                document.querySelector(`.nav-links a[href="#page-${targetPage}"]`).classList.add('active');
+                
+                // Прокрутка к странице
+                document.getElementById(`page-${targetPage}`).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Обработчик кнопки "Получить прогноз"
+        document.getElementById('forecast-btn').addEventListener('click', function() {
+            const forecastBtn = this;
+            const forecastContainer = document.getElementById('forecast-container');
+            const aiLoading = document.getElementById('ai-loading');
+            
+            // Скрываем предыдущий прогноз если есть
+            forecastContainer.classList.remove('visible');
+            forecastContainer.innerHTML = '';
+            
+            // Скрываем кнопку
+            forecastBtn.style.display = 'none';
+            
+            // Показываем индикатор загрузки
+            aiLoading.classList.add('visible');
+            
+            // Имитация анализа AI (3 секунды)
+            setTimeout(function() {
+                // Скрываем индикатор загрузки
+                aiLoading.classList.remove('visible');
+                
+                // Генерируем и показываем прогноз
+                generateForecast();
+                forecastContainer.classList.add('visible');
+                
+                // Прокручиваем к прогнозу
+                forecastContainer.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+            }, 3000);
+        });
+        
+        // Функция генерации прогноза
+        function generateForecast() {
+            const forecastContainer = document.getElementById('forecast-container');
+            
+            let forecastHTML = `
+                <h3 class="forecast-title">AI Прогноз</h3>
+                <div class="forecast-card">
+                    <div class="match-header">${forecastData.teams}</div>
+            `;
+            
+            // Добавляем прогнозы (только один)
+            forecastData.forecasts.forEach(forecast => {
+                forecastHTML += `
+                    <div class="forecast-item">
+                        <span class="forecast-type">${forecast.type}</span>
+                        <span class="forecast-value coefficient">Коэффициент: ${forecast.coefficient}</span>
+                    </div>
+                `;
+            });
+            
+            // Добавляем аналитику
+            forecastHTML += `
+                    <div class="analysis-section">
+                        <div class="analysis-title">Аналитика матча:</div>
+            `;
+            
+            forecastData.analysis.forEach(analysis => {
+                if (analysis === '') {
+                    forecastHTML += `<div style="margin: 10px 0;"></div>`;
+                } else {
+                    forecastHTML += `<div class="analysis-text">${analysis}</div>`;
+                }
+            });
+            
+            // Добавляем финальное сообщение без кнопки получения нового прогноза
+            forecastHTML += `
+                    </div>
+                    <div class="final-message">
+                        <div class="final-text">🎯 Этот прогноз был создан специально для вас!</div>
+                        <div class="final-text">Хотите получать такие же точные прогнозы ежедневно?</div>
+                        <button class="btn telegram-btn" onclick="window.open('https://t.me/bookersdearh', '_blank')">
+                            <i class="fab fa-telegram" style="margin-right: 10px;"></i>Присоединиться к каналу
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            forecastContainer.innerHTML = forecastHTML;
+        }
+        
+        // Анимация появления элементов при прокрутке
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        fadeElements.forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Параллакс эффект для фона
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const shapes = document.querySelectorAll('.shape');
+            const particles = document.querySelectorAll('.ai-particle');
+            
+            shapes.forEach(shape => {
+                const speed = 0.3;
+                const yPos = -(scrolled * speed);
+                shape.style.transform = `translateY(${yPos}px) scale(1)`;
+            });
+
+            particles.forEach(particle => {
+                const speed = 0.5;
+                const yPos = -(scrolled * speed);
+                particle.style.transform = `translateY(${yPos}px)`;
+            });
+            
+            // Индикатор прогресса
+            const winHeight = window.innerHeight;
+            const docHeight = document.documentElement.scrollHeight;
+            const scrollTop = window.pageYOffset;
+            const scrollPercent = (scrollTop) / (docHeight - winHeight);
+            const progressBar = document.querySelector('.progress-bar');
+            progressBar.style.width = `${scrollPercent * 100}%`;
+            
+            // Эффект появления навигации при скролле
+            const header = document.querySelector('header');
+            if (scrollTop > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            // Обновление активной навигации
+            const sections = document.querySelectorAll('.page');
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
+                if (scrollTop >= sectionTop && scrollTop < sectionTop + sectionHeight) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            if (currentSection) {
+                const currentPage = currentSection.split('-')[1];
+                
+                // Обновляем активную точку
+                document.querySelectorAll('.dot').forEach(d => {
+                    d.classList.remove('active');
+                });
+                document.querySelector(`.dot[data-page="${currentPage}"]`).classList.add('active');
+                
+                // Обновляем активную ссылку в навигации
+                document.querySelectorAll('.nav-links a').forEach(link => {
+                    link.classList.remove('active');
+                });
+                document.querySelector(`.nav-links a[href="#${currentSection}"]`).classList.add('active');
+            }
+        });
+        
+        // Плавная прокрутка для навигационных ссылок
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // Обновляем активную точку
+                    const pageNum = targetId.split('-')[1];
+                    document.querySelectorAll('.dot').forEach(d => {
+                        d.classList.remove('active');
+                    });
+                    document.querySelector(`.dot[data-page="${pageNum}"]`).classList.add('active');
+                    
+                    // Обновляем активную ссылку в навигации
+                    document.querySelectorAll('.nav-links a').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    window.scrollTo({
+                        top: targetElement.offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Эффект появления текста для главной страницы
+        function animateMainText() {
+            const mainLogo = document.querySelector('.main-logo');
+            const aiTitle = document.querySelector('.ai-title');
+            const since = document.querySelector('.since');
+            const subtitle = document.querySelector('.minimal-subtitle');
+            
+            // Последовательное появление элементов
+            setTimeout(() => {
+                mainLogo.classList.add('visible');
+            }, 500);
+            
+            setTimeout(() => {
+                aiTitle.classList.add('visible');
+            }, 1200);
+            
+            setTimeout(() => {
+                since.classList.add('visible');
+            }, 1900);
+            
+            setTimeout(() => {
+                subtitle.classList.add('visible');
+            }, 2400);
+        }
+        
+        // Запускаем анимацию главной страницы
+        animateMainText();
+    </script>
+</body>
+</html>
